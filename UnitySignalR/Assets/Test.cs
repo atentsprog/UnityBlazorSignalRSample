@@ -41,7 +41,7 @@ public class Test : MonoBehaviour
     private async void Connect()
     {
         //connection.On<string, string>("broadcastMessage", (name, message) =>
-        connection.On<string, string>("broadcastMessage", OnReceiveMessage);
+        connection.On<string, string>("ClientReceiveMessage", OnReceiveMessage);
 
         try
         {
@@ -67,7 +67,7 @@ public class Test : MonoBehaviour
     {
         try
         {
-            await connection.InvokeAsync("broadcastMessage", userName, msg);
+            await connection.InvokeAsync("SeverReceiveMessage", userName, msg);
         }
         catch (System.Exception ex)
         {
