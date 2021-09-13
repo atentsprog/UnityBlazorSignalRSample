@@ -62,3 +62,5 @@ crashlytics-build.properties
 /UnitySignalR/Library
 /BlazorGroupChatSignalR/obj
 /BlazorGroupChatSignalR/bin
+/UnitySignalR/Logs
+/UnitySignalR/obj
