@@ -83,8 +83,11 @@ public class Test : MonoBehaviour
     List<Action> mainThreadFn = new List<Action>();
     private void Update()
     {
-        foreach (var item in mainThreadFn)
-            item();
-        mainThreadFn.Clear();
+        lock (mainThreadFn)
+        {
+            foreach (var item in mainThreadFn)
+                item();
+            mainThreadFn.Clear();
+        }
     }
 }
