@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+/UnitySignalR/Temp
+/UnitySignalR/Library
+/BlazorGroupChatSignalR/obj
+/BlazorGroupChatSignalR/bin
