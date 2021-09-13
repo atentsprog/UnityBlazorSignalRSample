@@ -28,7 +28,7 @@ public class Test : MonoBehaviour
     {
         Debug.Log($"{name}: {message}");
 
-        string[] posString = message.Split(':');
+        string[] posString = message.Split(',');
         if (posString.Length != 2)
             return;
 
@@ -41,7 +41,7 @@ public class Test : MonoBehaviour
     private async void Connect()
     {
         //connection.On<string, string>("broadcastMessage", (name, message) =>
-        connection.On<string, string>("Broadcast", OnReceiveMessage);
+        connection.On<string, string>("broadcastMessage", OnReceiveMessage);
 
         try
         {
@@ -60,14 +60,14 @@ public class Test : MonoBehaviour
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         objPosition.z = transform.position.z;
         //transform.position = objPosition;
-        Send($"{objPosition.x}:{objPosition.y}");
+        Send($"{objPosition.x},{objPosition.y}");
     }
 
     private async void Send(string msg)
     {
         try
         {
-            await connection.InvokeAsync("Broadcast", userName, msg);
+            await connection.InvokeAsync("broadcastMessage", userName, msg);
         }
         catch (System.Exception ex)
         {
