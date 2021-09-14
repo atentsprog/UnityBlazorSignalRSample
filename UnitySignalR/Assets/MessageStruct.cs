@@ -30,12 +30,40 @@ public enum Command
     ResultBuyItem       = 21,
 }
 
-public class RequestLogin
+[Serializable]
+public class MsgHeader
+{
+    public MsgHeader(Command _command)
+    {
+        command = _command;
+    }
+    [JsonInclude]
+    public Command command;
+}
+[Serializable]
+public class RequestMsg : MsgHeader
+{
+    public RequestMsg(Command _command) : base(_command) { }
+}
+
+[Serializable]
+public class ResultMsg : MsgHeader
+{
+    public ResultMsg(Command command) : base(command) { }
+    [JsonInclude]
+    public int result;
+}
+
+public class RequestLogin : RequestMsg
 {
     public string deviceID;
+
+    public RequestLogin() : base(Command.RequestLogin){}
 }
-public class ResultLogin
+
+public class ResultLogin : ResultMsg
 {
+    public ResultLogin() : base(Command.ResultLogin) { }
     [JsonInclude]
     public int id;
     [JsonInclude] public int gold;

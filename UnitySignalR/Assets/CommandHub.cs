@@ -65,9 +65,14 @@ public class CommandHub : MonoBehaviour
         // 로그인 명령..
         RequestLogin request = new RequestLogin();
         request.deviceID = SystemInfo.deviceUniqueIdentifier;
-        string json = JsonUtility.ToJson(request);
 
-        connection.InvokeAsync("SeverReceiveMessage", Command.RequestLogin, json);
+        SendToServer(request);
+    }
+
+    private void SendToServer(RequestMsg request)
+    {
+        string json = JsonUtility.ToJson(request);
+        connection.InvokeAsync("SeverReceiveMessage", request.command, json);
     }
 
     List<Action> mainThreadFn = new List<Action>();
