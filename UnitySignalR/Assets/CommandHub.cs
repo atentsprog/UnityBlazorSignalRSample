@@ -44,7 +44,7 @@ public class CommandHub : MonoBehaviour
         {
             case Command.ResultLogin:
                 ResultLogin resultLogin = JsonUtility.FromJson<ResultLogin>(jsonStr);
-                print(resultLogin.gold);
+                print(resultLogin.userinfo.Gold);
                 break;
             default:
                 Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
