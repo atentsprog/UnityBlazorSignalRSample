@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using System.Linq;
 
 public class CommandHub : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class CommandHub : MonoBehaviour
 
         transform.Find("Button").GetComponent<Button>()
             .onClick.AddListener(Login);
+        elapsedTimesText = transform.Find("ElapsedTime").GetComponent<Text>();
 
         connection = new HubConnectionBuilder()
             .WithUrl(baseURL)
@@ -28,9 +30,13 @@ public class CommandHub : MonoBehaviour
 
         Connect();
     }
+
+    List<double> elapsedTimes = new List<double>();
     void OnReceiveMessage(Command command, string jsonStr)
     {
-        lock(mainThreadFn)
+        double elapsedTime = (DateTime.Now - requstTime).TotalMilliseconds;
+        elapsedTimes.Add(elapsedTime);
+        lock (mainThreadFn)
         { 
             mainThreadFn.Add(() =>
             {
@@ -41,7 +47,9 @@ public class CommandHub : MonoBehaviour
 
     private void OnReceiveCommand(Command command, string jsonStr)
     {
-        switch(command)
+        UpdateElapsedTimeUI();
+
+        switch (command)
         {
             case Command.ResultLogin:                
                 ResultLogin resultLogin = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
@@ -52,6 +60,20 @@ public class CommandHub : MonoBehaviour
             default:
                 Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
                 break;
+        }
+    }
+
+    Text elapsedTimesText;
+    bool completeDeleteFirstTime = false;
+    private void UpdateElapsedTimeUI()
+    {
+        double lastTime = elapsedTimes.Last() * 0.0001;
+        double average = elapsedTimes.Sum() / elapsedTimes.Count * 0.0001;
+        elapsedTimesText.text = $"Last :{lastTime:0.0000}s, average:{average:0.0000}s";
+        if (completeDeleteFirstTime == false)
+        {
+            elapsedTimes.RemoveAt(0); // 처음로그인 메시지 응답은 다른것보다 비정상적으로 느려서 빼버림.
+            completeDeleteFirstTime = true;
         }
     }
 
@@ -72,8 +94,10 @@ public class CommandHub : MonoBehaviour
         SendToServer(request);
     }
 
-    private void SendToServer(RequestMsg request)
+    DateTime requstTime;
+    public void SendToServer(RequestMsg request)
     {
+        requstTime = DateTime.Now;
         string json = JsonConvert.SerializeObject(request);
         connection.InvokeAsync("SeverReceiveMessage", request.command, json);
     }
