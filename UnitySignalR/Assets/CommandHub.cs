@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class CommandHub : MonoBehaviour
 {
@@ -42,8 +43,8 @@ public class CommandHub : MonoBehaviour
     {
         switch(command)
         {
-            case Command.ResultLogin:
-                ResultLogin resultLogin = JsonUtility.FromJson<ResultLogin>(jsonStr);
+            case Command.ResultLogin:                
+                ResultLogin resultLogin = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
                 print(resultLogin.userinfo.Gold);
                 break;
             default:

@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-
 #if UNITY_5_3_OR_NEWER
+using Newtonsoft.Json;
 using UnityEngine;
 internal class JsonIncludeAttribute : Attribute
 {

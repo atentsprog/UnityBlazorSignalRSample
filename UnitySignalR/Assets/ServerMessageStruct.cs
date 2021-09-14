@@ -15,4 +15,7 @@ public partial class Account
 {
     public int Id { get; set; }
     public string Deviceid { get; set; }
+    public DateTime Lastlogin { get; set; }
+    public DateTime CreateTime { get; set; }
+    public DateTime ModificationTime { get; set; }
 }
