@@ -14,7 +14,7 @@ public class CommandHub : MonoBehaviour
         Debug.Log("Hello World!");
 
         transform.Find("Button").GetComponent<Button>()
-            .onClick.AddListener(Send);
+            .onClick.AddListener(Login);
 
         connection = new HubConnectionBuilder()
             .WithUrl(baseURL)
@@ -45,11 +45,18 @@ public class CommandHub : MonoBehaviour
     {
         connection.On<string>("ClientReceiveMessage", OnReceiveMessage);
         await connection.StartAsync();
+
+        Login();
     }
     public string message = "Hello!";
-    public void Send()
+    public void Login()
     {
-        connection.InvokeAsync("SeverReceiveMessage", message);
+        // 로그인 명령..
+        RequestLogin request = new RequestLogin();
+        request.deviceID = SystemInfo.deviceUniqueIdentifier;
+        string json = JsonUtility.ToJson(request);
+
+        connection.InvokeAsync("SeverReceiveMessage", Command.RequestLogin, json);
     }
 
     List<Action> mainThreadFn = new List<Action>();
