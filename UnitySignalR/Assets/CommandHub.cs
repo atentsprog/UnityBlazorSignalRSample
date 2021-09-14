@@ -46,6 +46,8 @@ public class CommandHub : MonoBehaviour
             case Command.ResultLogin:                
                 ResultLogin resultLogin = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
                 print(resultLogin.userinfo.Gold);
+                UserData.Instance.userinfo = resultLogin.userinfo;
+                UserData.Instance.account = resultLogin.account;
                 break;
             default:
                 Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
@@ -72,7 +74,7 @@ public class CommandHub : MonoBehaviour
 
     private void SendToServer(RequestMsg request)
     {
-        string json = JsonUtility.ToJson(request);
+        string json = JsonConvert.SerializeObject(request);
         connection.InvokeAsync("SeverReceiveMessage", request.command, json);
     }
 
