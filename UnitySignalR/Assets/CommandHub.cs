@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CommandHub : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class CommandHub : MonoBehaviour
     void Start()
     {
         Debug.Log("Hello World!");
+
+        transform.Find("Button").GetComponent<Button>()
+            .onClick.AddListener(Send);
+
         connection = new HubConnectionBuilder()
             .WithUrl(baseURL)
             .Build();
@@ -24,7 +29,16 @@ public class CommandHub : MonoBehaviour
     }
     void OnReceiveMessage(string message)
     {
-        Debug.Log($"{message}");
+        lock(mainThreadFn)
+        { 
+            mainThreadFn.Add(() =>
+            {
+                Debug.Log($"{message} + !!!!!");
+                Debug.Log(transform.name);
+                Debug.Log(transform.position);
+                Debug.Log($"{message} + !");
+            });
+        }
     }
 
     private async void Connect()
@@ -33,19 +47,25 @@ public class CommandHub : MonoBehaviour
         await connection.StartAsync();
     }
     public string message = "Hello!";
-    private async void Send()
+    public void Send()
     {
-        await connection.InvokeAsync("SeverReceiveMessage", message);
+        connection.InvokeAsync("SeverReceiveMessage", message);
     }
 
     List<Action> mainThreadFn = new List<Action>();
+    
     private void Update()
     {
         lock (mainThreadFn)
         {
-            foreach (var item in mainThreadFn)
-                item();
-            mainThreadFn.Clear();
+            if (mainThreadFn.Count > 0)
+            {
+                foreach (var item in mainThreadFn)
+                {
+                    item();
+                }
+                mainThreadFn.Clear();
+            }
         }
     }
 }
