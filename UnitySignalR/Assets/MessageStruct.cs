@@ -1,8 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
+
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+internal class JsonIncludeAttribute : Attribute
+{
+}
+#else
+using System.Text.Json.Serialization;
 #endif
 
 public enum Command
@@ -29,6 +36,7 @@ public class RequestLogin
 }
 public class ResultLogin
 {
+    [JsonInclude]
     public int id;
-    public int gold;
+    [JsonInclude] public int gold;
 }

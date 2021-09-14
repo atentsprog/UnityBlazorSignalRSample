@@ -27,23 +27,34 @@ public class CommandHub : MonoBehaviour
 
         Connect();
     }
-    void OnReceiveMessage(string message)
+    void OnReceiveMessage(Command command, string jsonStr)
     {
         lock(mainThreadFn)
         { 
             mainThreadFn.Add(() =>
             {
-                Debug.Log($"{message} + !!!!!");
-                Debug.Log(transform.name);
-                Debug.Log(transform.position);
-                Debug.Log($"{message} + !");
+                OnReceiveCommand(command, jsonStr);
             });
+        }
+    }
+
+    private void OnReceiveCommand(Command command, string jsonStr)
+    {
+        switch(command)
+        {
+            case Command.ResultLogin:
+                ResultLogin resultLogin = JsonUtility.FromJson<ResultLogin>(jsonStr);
+                print(resultLogin.gold);
+                break;
+            default:
+                Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
+                break;
         }
     }
 
     private async void Connect()
     {
-        connection.On<string>("ClientReceiveMessage", OnReceiveMessage);
+        connection.On<Command, string>("ClientReceiveMessage", OnReceiveMessage);
         await connection.StartAsync();
 
         Login();
