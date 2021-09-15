@@ -14,9 +14,6 @@ public class CommandHub : MonoBehaviour
     {
         Debug.Log("Hello World!");
 
-        transform.Find("Button").GetComponent<Button>()
-            .onClick.AddListener(GetComponent<GameSimulator>().RequstLogin);
-
         connection = new HubConnectionBuilder()
             .WithUrl(baseURL)
             .Build();
@@ -57,7 +54,7 @@ public class CommandHub : MonoBehaviour
         connection.On<Command, string>("ClientReceiveMessage", OnReceiveMessage);
         await connection.StartAsync();
 
-        GetComponent<GameSimulator>().RequstLogin();
+        GetComponent<GameSimulator>().RequestLogin();
     }
     public string message = "Hello!";
 
