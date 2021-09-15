@@ -11,43 +11,52 @@ public class GameSimulator : MonoBehaviour
     class CommandInfo
     {
         public string name;
-        public Command requestCommand;
-        public Command resultCommand;
         public UnityAction requestFn;
         public UnityAction<string> resultFn;
-        public CommandInfo(string name, Command requestCommand, Command resultCommand, UnityAction requestFn, UnityAction<string> resultFn)
+        public CommandInfo(string name,  UnityAction requestFn, UnityAction<string> resultFn)
         {
             this.name = name;
-            this.requestCommand = requestCommand;
-            this.resultCommand = resultCommand;
             this.requestFn = requestFn;
             this.resultFn = resultFn;
         }
     }
     CommandHub commandHub;
     public Button baseButton;
-    List<CommandInfo> commandInfos = new List<CommandInfo>();
+    Dictionary<Command, CommandInfo> commandInfos = new Dictionary<Command, CommandInfo>();
     void Awake()
     {
         commandHub = GetComponent<CommandHub>();
 
-        commandInfos.AddRange(new CommandInfo[]{
-            new CommandInfo("로그인", Command.RequestLogin, Command.ResultLogin, RequestLogin, ResultLogin),
-            new CommandInfo("보상", Command.RequestReward, Command.ResultReward, RequestReward, ResultReward),
-            new CommandInfo("닉네임 변경", Command.RequestChangeNickname, Command.ResultChangeNickname, RequestChangeNickname, ResultChangeNickname),
-            });
+        commandInfos[Command.ResultLogin] = new CommandInfo("로그인", RequestLogin, ResultLogin);
+        commandInfos[Command.ResultReward] = new CommandInfo("보상", RequestReward, ResultReward);
+        commandInfos[Command.ResultChangeNickname] = new CommandInfo("닉네임 변경", RequestChangeNickname, ResultChangeNickname);
 
-        foreach(var item in commandInfos)
+
+        foreach (var item in commandInfos.Values)
         {
             var newButton = Instantiate(baseButton, baseButton.transform.parent);
             newButton.GetComponentInChildren<Text>().text = item.name;
             newButton.onClick.AddListener(item.requestFn);
         }
         baseButton.gameObject.SetActive(false);
+
+        commandHub.onReceiveCommand = OnReceiveCommand;
     }
     private void SendToServer(RequestMsg request)
     {
         commandHub.SendToServer(request);
+    }
+
+    private void OnReceiveCommand(Command command, string jsonStr)
+    {
+        if (commandInfos.TryGetValue(command, out CommandInfo info))
+        {
+            info.resultFn(jsonStr);
+        }
+        else
+        {
+            Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
+        }
     }
 
     #region 로그인

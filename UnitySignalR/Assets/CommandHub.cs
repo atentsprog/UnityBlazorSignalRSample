@@ -31,29 +31,12 @@ public class CommandHub : MonoBehaviour
         { 
             mainThreadFn.Add(() =>
             {
-                OnReceiveCommand(command, jsonStr);
+                onReceiveCommand(command, jsonStr);
+                //OnReceiveCommand(command, jsonStr);
             });
         }
     }
-
-    private void OnReceiveCommand(Command command, string jsonStr)
-    {
-        switch(command)
-        {
-            case Command.ResultLogin:
-                GetComponent<GameSimulator>().ResultLogin(jsonStr);
-                break;
-            case Command.ResultReward:
-                GetComponent<GameSimulator>().ResultReward(jsonStr);
-                break;
-            case Command.ResultChangeNickname:
-                GetComponent<GameSimulator>().ResultChangeNickname(jsonStr);
-                break;
-            default:
-                Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
-                break;
-        }
-    }
+    public Action<Command, string> onReceiveCommand;
 
     private async void Connect()
     {
