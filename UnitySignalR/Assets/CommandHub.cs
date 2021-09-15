@@ -15,8 +15,6 @@ public class CommandHub : MonoBehaviour
     {
         Debug.Log("Hello World!");
 
-        transform.Find("Button").GetComponent<Button>()
-            .onClick.AddListener(Login);
         elapsedTimesText = transform.Find("ElapsedTime").GetComponent<Text>();
 
         connection = new HubConnectionBuilder()
@@ -44,41 +42,26 @@ public class CommandHub : MonoBehaviour
             });
         }
     }
-
+    public event Action<Command, string> onReceiveCommand;
     private void OnReceiveCommand(Command command, string jsonStr)
     {
         UpdateElapsedTimeUI();
-
-        switch (command)
-        {
-            case Command.ResultLogin:                
-                ResultLogin resultLogin = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
-                print(resultLogin.userinfo.Gold);
-                UserData.Instance.userinfo = resultLogin.userinfo;
-                UserData.Instance.account = resultLogin.account;
-                break;
-            default:
-                Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
-                break;
-        }
+        print($"응답 받음({command}):{jsonStr}");
+        onReceiveCommand(command, jsonStr);
     }
 
     Text elapsedTimesText;
-    bool completeDeleteFirstTime = false;
     private void UpdateElapsedTimeUI()
     {
         double lastTime = elapsedTimes.Last() * 0.0001;
         double average = elapsedTimes.Sum() / elapsedTimes.Count * 0.0001;
         elapsedTimesText.text = $"Last :{lastTime:0.0000}s, average:{average:0.0000}s";
-        if (completeDeleteFirstTime == false)
-        {
-            elapsedTimes.RemoveAt(0); // 처음로그인 메시지 응답은 다른것보다 비정상적으로 느려서 빼버림.
-            completeDeleteFirstTime = true;
-        }
     }
 
+    public float delayConnect = 0.5f;
     private async void Connect()
     {
+        await Task.Delay((int)(delayConnect * 1000));
         connection.On<Command, string>("ClientReceiveMessage", OnReceiveMessage);
         await connection.StartAsync();
 
@@ -99,6 +82,7 @@ public class CommandHub : MonoBehaviour
     {
         requstTime = DateTime.Now;
         string json = JsonConvert.SerializeObject(request);
+        print("서버로 요청 : " + json);
         connection.InvokeAsync("SeverReceiveMessage", request.command, json);
     }
 

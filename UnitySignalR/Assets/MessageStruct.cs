@@ -29,6 +29,16 @@ public enum Command
     // 아이템 구입
     RequestBuyItem      = 20,
     ResultBuyItem       = 21,
+
+    // 닉네임 교체
+    RequestChangeNickname = 30,
+    ResultChangeNickname = 31,
+}
+public enum ErrorCode
+{
+    Succeed = 0,
+
+    AlreadyExist,   // 이미 존재합니다
 }
 
 [Serializable]
@@ -52,7 +62,7 @@ public class ResultMsg : MsgHeader
 {
     public ResultMsg(Command command) : base(command) { }
     [JsonInclude]
-    public int result;
+    public ErrorCode result;
 }
 
 public class RequestLogin : RequestMsg
@@ -71,4 +81,19 @@ public class ResultLogin : ResultMsg
     public Account account;
     [JsonInclude]
     public Userinfo userinfo;
+}
+public class RequestChangeNickname : RequestMsg
+{
+    [JsonInclude]
+    public string newNickname;
+
+    public RequestChangeNickname() : base(Command.RequestChangeNickname) { }
+}
+
+
+public class ResultChangeNickname : ResultMsg
+{
+    public ResultChangeNickname() : base(Command.ResultChangeNickname) { }
+    [JsonInclude]
+    public string newNickname;
 }
