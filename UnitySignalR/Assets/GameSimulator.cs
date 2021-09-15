@@ -51,6 +51,7 @@ public partial class GameSimulator : MonoBehaviour
             newbutton.onClick.AddListener(item.requestFn);
             newbutton.GetComponentInChildren<Text>().text = item.name;
         }
+        buttonBaseItem.gameObject.SetActive(false);
     }
 
     class CommandInfo

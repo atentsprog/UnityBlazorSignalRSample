@@ -55,7 +55,7 @@ public class CommandHub : MonoBehaviour
     {
         double lastTime = elapsedTimes.Last() * 0.0001;
         double average = elapsedTimes.Sum() / elapsedTimes.Count * 0.0001;
-        elapsedTimesText.text = $"Last :{lastTime:0.0000}s, average:{average:0.0000}s";
+        elapsedTimesText.text = $"Last :{lastTime:0.000}s, average:{average:0.000}s";
     }
 
     public float delayConnect = 0.5f;
