@@ -15,7 +15,7 @@ public class CommandHub : MonoBehaviour
         Debug.Log("Hello World!");
 
         transform.Find("Button").GetComponent<Button>()
-            .onClick.AddListener(Login);
+            .onClick.AddListener(GetComponent<GameSimulator>().RequstLogin);
 
         connection = new HubConnectionBuilder()
             .WithUrl(baseURL)
@@ -43,11 +43,8 @@ public class CommandHub : MonoBehaviour
     {
         switch(command)
         {
-            case Command.ResultLogin:                
-                ResultLogin resultLogin = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
-                print(resultLogin.userinfo.Gold);
-                UserData.Instance.userinfo = resultLogin.userinfo;
-                UserData.Instance.account = resultLogin.account;
+            case Command.ResultLogin:
+                GetComponent<GameSimulator>().ResultLogin(jsonStr);
                 break;
             default:
                 Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
@@ -60,19 +57,11 @@ public class CommandHub : MonoBehaviour
         connection.On<Command, string>("ClientReceiveMessage", OnReceiveMessage);
         await connection.StartAsync();
 
-        Login();
+        GetComponent<GameSimulator>().RequstLogin();
     }
     public string message = "Hello!";
-    public void Login()
-    {
-        // 로그인 명령..
-        RequestLogin request = new RequestLogin();
-        request.deviceID = SystemInfo.deviceUniqueIdentifier;
 
-        SendToServer(request);
-    }
-
-    private void SendToServer(RequestMsg request)
+    public void SendToServer(RequestMsg request)
     {
         string json = JsonConvert.SerializeObject(request);
         connection.InvokeAsync("SeverReceiveMessage", request.command, json);
