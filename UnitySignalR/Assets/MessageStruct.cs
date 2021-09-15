@@ -33,13 +33,19 @@ public enum Command
     // 보상 요청
     RequestReward       = 30,
     ResultReward        = 31,
+
+    // 닉네임 교체
+    RequestChangeNickname = 40,
+    ResultChangeNickname = 41,
 }
 
 public enum ErrorCode
 {
-    Succeed = 0, // 성공(에러 없음
+    Succeed = 0,            // 성공(에러 없음
 
     Invaild_Reward_Type,    // 유효하지 않은 보상 타입.
+    AlreadyExist,           // 이미 존재합니다
+    SameAsCurrentName,      //현재 이름과 동일합니다.
 }
 
 [Serializable]
@@ -100,4 +106,19 @@ public class ResultReward : ResultMsg
     public int rewardGold; // 이번에 추가된골드.
     [JsonInclude]
     public int currentGold; // rewardGold를 합친 골드
+}
+public class RequestChangeNickname : RequestMsg
+{
+    [JsonInclude]
+    public string newNickname;
+
+    public RequestChangeNickname() : base(Command.RequestChangeNickname) { }
+}
+
+
+public class ResultChangeNickname : ResultMsg
+{
+    public ResultChangeNickname() : base(Command.ResultChangeNickname) { }
+    [JsonInclude]
+    public string newNickname;
 }

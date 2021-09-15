@@ -34,6 +34,7 @@ public class GameSimulator : MonoBehaviour
         commandInfos.AddRange(new CommandInfo[]{
             new CommandInfo("로그인", Command.RequestLogin, Command.ResultLogin, RequestLogin, ResultLogin),
             new CommandInfo("보상", Command.RequestReward, Command.ResultReward, RequestReward, ResultReward),
+            new CommandInfo("닉네임 변경", Command.RequestChangeNickname, Command.ResultChangeNickname, RequestChangeNickname, ResultChangeNickname),
             });
 
         foreach(var item in commandInfos)
@@ -65,7 +66,7 @@ public class GameSimulator : MonoBehaviour
         if (ReturnIfErrorExist(result.result))
             return;
 
-        print(result.userinfo.Gold);
+        print(result.userinfo.gold);
         UserData.Instance.userinfo = result.userinfo;
         UserData.Instance.account = result.account;
     }
@@ -97,16 +98,36 @@ public class GameSimulator : MonoBehaviour
     public void ResultReward(string jsonStr)
     {
         ResultReward result = JsonConvert.DeserializeObject<ResultReward>(jsonStr);
-        
-        if(result.result != ErrorCode.Succeed)
+
+        if (result.result != ErrorCode.Succeed)
         {
             Debug.LogError(result.result);
             return;
         }
-         
+
         print(result.rewardGold);
         print(result.currentGold);
-        UserData.Instance.userinfo.Gold = result.currentGold;
+        UserData.Instance.userinfo.gold = result.currentGold;
     }
     #endregion
+
+
+    #region 닉네임 교체
+    void RequestChangeNickname()
+    {
+        RequestChangeNickname request = new RequestChangeNickname();
+        request.newNickname = UserData.Instance.userinfo.nickname;
+        SendToServer(request);
+    }
+
+    public void ResultChangeNickname(string jsonStr)
+    {
+        ResultChangeNickname result = JsonConvert.DeserializeObject<ResultChangeNickname>(jsonStr);
+
+        if (ReturnIfErrorExist(result.result))
+            return;
+
+        print($"[{result.newNickname}] 이름 변경이 완료되었습니다.");
+    }
+    #endregion 닉네임 교체
 }
