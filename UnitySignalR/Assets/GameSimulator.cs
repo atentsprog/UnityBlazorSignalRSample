@@ -60,13 +60,32 @@ public class GameSimulator : MonoBehaviour
     }
     public void ResultLogin(string jsonStr)
     {
-        ResultLogin resultLogin = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
-        print(resultLogin.userinfo.Gold);
-        UserData.Instance.userinfo = resultLogin.userinfo;
-        UserData.Instance.account = resultLogin.account;
-    }
-    #endregion 로그인
+        ResultLogin result = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
 
+        if (ReturnIfErrorExist(result.result))
+            return;
+
+        print(result.userinfo.Gold);
+        UserData.Instance.userinfo = result.userinfo;
+        UserData.Instance.account = result.account;
+    }
+
+    #endregion 로그인
+    /// <summary>
+    /// 에러가 있다면 에러코드를 표시하고 true리턴
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns>에러 있으면 true</returns>
+    private bool ReturnIfErrorExist(ErrorCode result)
+    {
+        if (result != ErrorCode.Succeed)
+        {
+            Debug.LogError(result);
+            return true;
+        }
+
+        return false;
+    }
     #region 보상 요청
     public string rewardType = "100Gold";
     void RequestReward()
@@ -78,6 +97,13 @@ public class GameSimulator : MonoBehaviour
     public void ResultReward(string jsonStr)
     {
         ResultReward result = JsonConvert.DeserializeObject<ResultReward>(jsonStr);
+        
+        if(result.result != ErrorCode.Succeed)
+        {
+            Debug.LogError(result.result);
+            return;
+        }
+         
         print(result.rewardGold);
         print(result.currentGold);
         UserData.Instance.userinfo.Gold = result.currentGold;
