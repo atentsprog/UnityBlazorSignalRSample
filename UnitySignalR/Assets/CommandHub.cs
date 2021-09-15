@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 using System;
@@ -47,7 +47,7 @@ public class CommandHub : MonoBehaviour
                 GetComponent<GameSimulator>().ResultLogin(jsonStr);
                 break;
             default:
-                Debug.LogError($"{command}:¾ÆÁ÷ ±¸ÇöÇÏÁö ¾ÈÀº ¸Ş½ÃÁöÀÔ´Ï´Ù");
+                Debug.LogError($"{command}:ì•„ì§ êµ¬í˜„í•˜ì§€ ì•ˆì€ ë©”ì‹œì§€ì…ë‹ˆë‹¤");
                 break;
         }
     }
