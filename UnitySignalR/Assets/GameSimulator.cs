@@ -15,8 +15,6 @@ public class GameSimulator : MonoBehaviour
         public Command resultCommand;
         public UnityAction requestFn;
         public UnityAction<string> resultFn;
-
-
         public CommandInfo(string name, Command requestCommand, Command resultCommand, UnityAction requestFn, UnityAction<string> resultFn)
         {
             this.name = name;
@@ -77,7 +75,7 @@ public class GameSimulator : MonoBehaviour
         request.rewardType = rewardType;
         SendToServer(request);
     }
-    void ResultReward(string jsonStr)
+    public void ResultReward(string jsonStr)
     {
         ResultReward result = JsonConvert.DeserializeObject<ResultReward>(jsonStr);
         print(result.rewardGold);

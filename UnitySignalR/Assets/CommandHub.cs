@@ -43,6 +43,9 @@ public class CommandHub : MonoBehaviour
             case Command.ResultLogin:
                 GetComponent<GameSimulator>().ResultLogin(jsonStr);
                 break;
+            case Command.ResultReward:
+                GetComponent<GameSimulator>().ResultReward(jsonStr);
+                break;
             default:
                 Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
                 break;
@@ -60,6 +63,7 @@ public class CommandHub : MonoBehaviour
 
     public void SendToServer(RequestMsg request)
     {
+        request.userID = UserData.Instance.userinfo.Id;
         string json = JsonConvert.SerializeObject(request);
         connection.InvokeAsync("SeverReceiveMessage", request.command, json);
     }
