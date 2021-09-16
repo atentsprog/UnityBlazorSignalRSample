@@ -44,6 +44,18 @@ public class GameSimulator : MonoBehaviour
         commandHub.SendToServer(request);
     }
 
+    public void OnReceiveCommand(Command resultCommand, string jsonStr)
+    {
+        if(commandInfos.TryGetValue(resultCommand, out CommandInfo commandInfo))
+        {
+            commandInfo.resultFn(jsonStr);
+        }
+        else
+        {
+            Debug.LogError($"{resultCommand}:아직 구현하지 안은 메시지입니다");
+        }
+    }
+
     #region 로그인
     public void RequestLogin()
     {
