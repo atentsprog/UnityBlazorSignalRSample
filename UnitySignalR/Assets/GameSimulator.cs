@@ -6,23 +6,23 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+public class CommandInfo
+{
+    public string name;
+    public UnityAction requestFn;
+    public UnityAction<string> resultFn;
+    public CommandInfo(string name, UnityAction requestFn, UnityAction<string> resultFn)
+    {
+        this.name = name;
+        this.requestFn = requestFn;
+        this.resultFn = resultFn;
+    }
+}
 public class GameSimulator : MonoBehaviour
 {
-    class CommandInfo
-    {
-        public string name;
-        public UnityAction requestFn;
-        public UnityAction<string> resultFn;
-        public CommandInfo(string name,  UnityAction requestFn, UnityAction<string> resultFn)
-        {
-            this.name = name;
-            this.requestFn = requestFn;
-            this.resultFn = resultFn;
-        }
-    }
     CommandHub commandHub;
     public Button baseButton;
-    Dictionary<Command, CommandInfo> commandInfos = new Dictionary<Command, CommandInfo>();
+    public Dictionary<Command, CommandInfo> commandInfos = new Dictionary<Command, CommandInfo>();
     void Awake()
     {
         commandHub = GetComponent<CommandHub>();
@@ -31,7 +31,9 @@ public class GameSimulator : MonoBehaviour
         commandInfos[Command.ResultReward] = new CommandInfo("보상", RequestReward, ResultReward);
         commandInfos[Command.ResultChangeNickname] = new CommandInfo("닉네임 변경", RequestChangeNickname, ResultChangeNickname);
 
-
+    }
+    private void Start()
+    {   
         foreach (var item in commandInfos.Values)
         {
             var newButton = Instantiate(baseButton, baseButton.transform.parent);
@@ -42,7 +44,7 @@ public class GameSimulator : MonoBehaviour
 
         commandHub.onReceiveCommand = OnReceiveCommand;
     }
-    private void SendToServer(RequestMsg request)
+    public void SendToServer(RequestMsg request)
     {
         commandHub.SendToServer(request);
     }
@@ -57,6 +59,22 @@ public class GameSimulator : MonoBehaviour
         {
             Debug.LogError($"{command}:아직 구현하지 안은 메시지입니다");
         }
+    }
+
+    /// <summary>
+    /// 에러가 있다면 에러코드를 표시하고 true리턴
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns>에러 있으면 true</returns>
+    public bool ReturnIfErrorExist(ErrorCode result)
+    {
+        if (result != ErrorCode.Succeed)
+        {
+            Debug.LogError(result);
+            return true;
+        }
+
+        return false;
     }
 
     #region 로그인
@@ -81,21 +99,6 @@ public class GameSimulator : MonoBehaviour
     }
 
     #endregion 로그인
-    /// <summary>
-    /// 에러가 있다면 에러코드를 표시하고 true리턴
-    /// </summary>
-    /// <param name="result"></param>
-    /// <returns>에러 있으면 true</returns>
-    private bool ReturnIfErrorExist(ErrorCode result)
-    {
-        if (result != ErrorCode.Succeed)
-        {
-            Debug.LogError(result);
-            return true;
-        }
-
-        return false;
-    }
     #region 보상 요청
     public string rewardType = "100Gold";
     void RequestReward()
@@ -119,8 +122,6 @@ public class GameSimulator : MonoBehaviour
         UserData.Instance.userinfo.gold = result.currentGold;
     }
     #endregion
-
-
     #region 닉네임 교체
     void RequestChangeNickname()
     {
@@ -139,4 +140,6 @@ public class GameSimulator : MonoBehaviour
         print($"[{result.newNickname}] 이름 변경이 완료되었습니다.");
     }
     #endregion 닉네임 교체
+
+
 }

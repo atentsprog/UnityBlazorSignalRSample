@@ -35,8 +35,12 @@ public enum Command
     ResultReward        = 31,
 
     // 닉네임 교체
-    RequestChangeNickname = 40,
-    ResultChangeNickname = 41,
+    RequestChangeNickname   = 40,
+    ResultChangeNickname    = 41,
+
+    // 채팅
+    RequestSendChat         = 50,
+    ResultSendChat          = 51,
 }
 
 public enum ErrorCode
@@ -121,4 +125,21 @@ public class ResultChangeNickname : ResultMsg
     public ResultChangeNickname() : base(Command.ResultChangeNickname) { }
     [JsonInclude]
     public string newNickname;
+}
+public class RequestSendChat : RequestMsg
+{
+    [JsonInclude]
+    public string message;
+
+    public RequestSendChat() : base(Command.RequestSendChat) { }
+}
+
+
+public class ResultSendChat : ResultMsg
+{
+    public ResultSendChat() : base(Command.ResultSendChat) { }
+    [JsonInclude]
+    public string senderName;
+    [JsonInclude]
+    public string message;
 }
