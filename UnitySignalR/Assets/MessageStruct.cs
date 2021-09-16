@@ -15,6 +15,7 @@ using System.Text.Json.Serialization;
 
 public enum Command
 {
+    ResultError         = -1,
     None,
     // ·Î±×ÀÎ.
     RequestLogin        = 1,

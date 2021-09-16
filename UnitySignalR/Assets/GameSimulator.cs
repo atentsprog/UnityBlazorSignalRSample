@@ -27,6 +27,8 @@ public class GameSimulator : MonoBehaviour
     {
         commandHub = GetComponent<CommandHub>();
 
+        commandInfos[Command.ResultError] = new CommandInfo("에러", null, ResultError);
+
         commandInfos[Command.ResultLogin] = new CommandInfo("로그인", RequestLogin, ResultLogin);
         commandInfos[Command.ResultReward] = new CommandInfo("보상", RequestReward, ResultReward);
         commandInfos[Command.ResultChangeNickname] = new CommandInfo("닉네임 변경", RequestChangeNickname, ResultChangeNickname);
@@ -34,6 +36,9 @@ public class GameSimulator : MonoBehaviour
 
         foreach (var item in commandInfos.Values)
         {
+            if (item.requestFn == null)
+                continue;
+
             var newButton = Instantiate(baseButton, baseButton.transform.parent);
             newButton.GetComponentInChildren<Text>().text = item.name;
             newButton.onClick.AddListener(item.requestFn);
@@ -41,6 +46,10 @@ public class GameSimulator : MonoBehaviour
         baseButton.gameObject.SetActive(false);
     }
 
+    private void ResultError(string errorDiscription)
+    {
+        Debug.LogError($"서버에서 받은 에러 내용: {errorDiscription}");
+    }
 
     private void SendToServer(RequestMsg request)
     {
