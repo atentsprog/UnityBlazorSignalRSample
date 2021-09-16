@@ -27,6 +27,7 @@ public class GameSimulator : MonoBehaviour
     {
         commandHub = GetComponent<CommandHub>();
 
+        commandInfos[Command.ResultError] = new CommandInfo("에러 결과", null, ResultError);
         commandInfos[Command.ResultLogin] = new CommandInfo("로그인", RequestLogin, ResultLogin);
         commandInfos[Command.ResultReward] = new CommandInfo("보상", RequestReward, ResultReward);
         commandInfos[Command.ResultChangeNickname] = new CommandInfo("닉네임 변경", RequestChangeNickname, ResultChangeNickname);
@@ -36,6 +37,9 @@ public class GameSimulator : MonoBehaviour
     {   
         foreach (var item in commandInfos.Values)
         {
+            if (item.requestFn == null)
+                continue;
+
             var newButton = Instantiate(baseButton, baseButton.transform.parent);
             newButton.GetComponentInChildren<Text>().text = item.name;
             newButton.onClick.AddListener(item.requestFn);
@@ -86,6 +90,10 @@ public class GameSimulator : MonoBehaviour
 
         SendToServer(request);
     }
+    public void ResultError(string errorMessage)
+    {
+        Debug.LogError($"서버에서 에러를 받았습니다. 에러 내용 : {errorMessage}");
+    }
     public void ResultLogin(string jsonStr)
     {
         ResultLogin result = JsonConvert.DeserializeObject<ResultLogin>(jsonStr);
@@ -94,7 +102,7 @@ public class GameSimulator : MonoBehaviour
             return;
 
         print(result.userinfo.gold);
-        UserData.Instance.userinfo = result.userinfo;
+        UserData.Instance.SetUserinfo(result.userinfo);
         UserData.Instance.account = result.account;
     }
 

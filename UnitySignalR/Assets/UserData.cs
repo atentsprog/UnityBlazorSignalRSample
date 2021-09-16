@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,5 +17,11 @@ public class UserData : MonoBehaviour
     private void OnDestroy()
     {
         Instance = null;
+    }
+    public event Action<Userinfo> onInitUserinfo;
+    public void SetUserinfo(Userinfo _userinfo)
+    {
+        userinfo = _userinfo;
+        onInitUserinfo(userinfo);
     }
 }

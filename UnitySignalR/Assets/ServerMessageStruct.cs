@@ -11,6 +11,7 @@ public partial class Userinfo
     public int gold;
     public int highscore;
     public string nickname;
+    public string lastChatGroup;
 }
 
 [Serializable]

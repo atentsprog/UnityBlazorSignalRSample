@@ -367,8 +367,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -195.62903, y: 0}
+  m_SizeDelta: {x: -391.2581, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &930343434
 MonoBehaviour:
@@ -529,6 +529,7 @@ MonoBehaviour:
     gold: 0
     highscore: 0
     nickname: 
+    lastChatGroup: 
   account:
     id: 0
     deviceid: 
@@ -698,35 +699,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 992483298}
     m_Modifications:
-    - target: {fileID: 8145956553900829630, guid: 9d0b5049a27dac74a949ae9244aa03e5,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145956553992228332, guid: 9d0b5049a27dac74a949ae9244aa03e5,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8145956554248105249, guid: 9d0b5049a27dac74a949ae9244aa03e5,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8145956554248105249, guid: 9d0b5049a27dac74a949ae9244aa03e5,
         type: 3}
       propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145956554248105249, guid: 9d0b5049a27dac74a949ae9244aa03e5,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8145956554248105249, guid: 9d0b5049a27dac74a949ae9244aa03e5,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 193.0033
       objectReference: {fileID: 0}
     - target: {fileID: 8145956554248105249, guid: 9d0b5049a27dac74a949ae9244aa03e5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 8145956554261372878, guid: 9d0b5049a27dac74a949ae9244aa03e5,
         type: 3}

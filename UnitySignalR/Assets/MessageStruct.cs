@@ -15,6 +15,8 @@ using System.Text.Json.Serialization;
 
 public enum Command
 {
+    ResultError         = -1,   // 에러 발생
+
     None,
     // 로그인.
     RequestLogin        = 1,
@@ -41,6 +43,8 @@ public enum Command
     // 채팅
     RequestSendChat         = 50,
     ResultSendChat          = 51,
+    RequestChangeChatChannel= 52,
+    ResultChangeChatChannel = 53,
 }
 
 public enum ErrorCode
@@ -142,4 +146,18 @@ public class ResultSendChat : ResultMsg
     public string senderName;
     [JsonInclude]
     public string message;
+}
+public class RequestChangeChatChannel : RequestMsg
+{
+    public RequestChangeChatChannel() : base(Command.RequestChangeChatChannel) { }
+    [JsonInclude]
+    public string newChannel;
+}
+
+
+public class ResultChangeChatChannel : ResultMsg
+{
+    public ResultChangeChatChannel() : base(Command.ResultChangeChatChannel) { }
+    [JsonInclude]
+    public string newChannel;
 }

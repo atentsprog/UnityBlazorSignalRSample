@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 8145956554248105249}
   - component: {fileID: 8145956554248105279}
   - component: {fileID: 8145956554248105278}
+  - component: {fileID: 8268020419909286097}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -386,8 +387,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 193.0033, y: 0}
+  m_SizeDelta: {x: 370.0065, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8145956554248105279
 CanvasRenderer:
@@ -428,9 +429,23 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 
+--- !u!114 &8268020419909286097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8145956554248105248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &8145956554261372913
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -0.00012207031}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &8145956554592243936
@@ -703,7 +718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 8
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -1362,7 +1377,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8145956554261372879}
   m_HandleRect: {fileID: 8145956554261372878}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1498,8 +1513,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778fb9c59561f044899c2a669cadd717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 8145956554855836380}
+  chatMessageInput: {fileID: 8145956554855836380}
+  newChannelInput: {fileID: 8145956555475120833}
   baseChatItem: {fileID: 8145956554248105278}
+  currentChannel: {fileID: 0}
   badWords:
   - "\uAD11\uACE0"
   - "\uD64D\uBCF4"
