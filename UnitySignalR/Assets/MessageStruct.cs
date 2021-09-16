@@ -33,6 +33,10 @@ public enum Command
     // 보상 요청
     RequestReward       = 30,
     ResultReward        = 31,
+
+    // 닉네임 변경
+    RequestChangeNickname = 40,
+    ResultChangeNickname = 41,
 }
 
 public enum ErrorCode
@@ -100,4 +104,18 @@ public class ResultReward : ResultMsg
     public int rewardGold; // 이번에 추가된골드.
     [JsonInclude]
     public int currentGold; // rewardGold를 합친 골드
+}
+class RequestChangeNickname : RequestMsg
+{
+    [JsonInclude]
+    public string newNickname;
+    public RequestChangeNickname() : base(Command.RequestChangeNickname) { }
+}
+
+public class ResultChangeNickname : ResultMsg
+{
+    public ResultChangeNickname() : base(Command.ResultChangeNickname) { }
+
+    [JsonInclude]
+    public string resultNickname;
 }
