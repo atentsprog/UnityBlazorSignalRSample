@@ -107,6 +107,12 @@ public class GameSimulator : MonoBehaviour
         GetComponentInChildren<ChatUI>().currentChannel.text = result.userinfo.lastChatGroup;
 
         UserData.Instance.account = result.account;
+
+        if (string.IsNullOrEmpty(UserData.Instance.userinfo.nickname))
+        {
+            // 닉네임 생성창 표시 하자.
+            GetComponentInChildren<NewNicknameUI>(true).gameObject.SetActive(true);
+        }
     }
 
     #endregion 로그인
@@ -131,11 +137,16 @@ public class GameSimulator : MonoBehaviour
     }
     #endregion
     #region 닉네임 변경
-    private void RequestChangeNickname()
+
+    internal void RequestChangeNickname(string newNickname)
     {
         RequestChangeNickname request = new RequestChangeNickname();
-        request.newNickname = UserData.Instance.userinfo.nickname;
+        request.newNickname = newNickname;
         SendToServer(request);
+    }
+    private void RequestChangeNickname()
+    {
+        RequestChangeNickname(UserData.Instance.userinfo.nickname);
     }
     private void ResultChangeNickname(string jsonStr)
     {
@@ -146,6 +157,7 @@ public class GameSimulator : MonoBehaviour
 
         Debug.Log($"<color=green>{result.resultNickname}</color> 닉네임 변경됨");
     }
+
 
     #endregion 닉네임 변경
 }
