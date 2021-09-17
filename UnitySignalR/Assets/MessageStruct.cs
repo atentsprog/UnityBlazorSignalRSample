@@ -2,6 +2,7 @@ using blazor.DB;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 #if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
@@ -72,6 +73,13 @@ public class RequestMsg : MsgHeader
     [JsonInclude]
     public int userID;
     public RequestMsg(Command _command) : base(_command) { }
+
+#if UNITY_5_3_OR_NEWER
+    public string ToJson()
+    {
+        return JsonConvert.SerializeObject(this);
+    }
+#endif
 }
 
 [Serializable]
