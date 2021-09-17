@@ -33,7 +33,10 @@ public class GameSimulator : MonoBehaviour
         commandInfos[Command.ResultReward] = new CommandInfo("보상", RequestReward, ResultReward);
         commandInfos[Command.ResultChangeNickname] = new CommandInfo("닉네임 변경", RequestChangeNickname, ResultChangeNickname);
 
+    }
 
+    private void Start()
+    {   
         foreach (var item in commandInfos.Values)
         {
             if (item.requestFn == null)
@@ -73,7 +76,7 @@ public class GameSimulator : MonoBehaviour
     /// </summary>
     /// <param name="result"></param>
     /// <returns>에러 있으면 true</returns>
-    private bool ReturnIfErrorExist(ErrorCode result)
+    public bool ReturnIfErrorExist(ErrorCode result)
     {
         if (result != ErrorCode.Succeed)
         {

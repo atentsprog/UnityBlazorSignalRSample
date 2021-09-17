@@ -127,3 +127,19 @@ public class ResultChangeNickname : ResultMsg
     [JsonInclude]
     public string resultNickname;
 }
+class RequestSendMessage : RequestMsg
+{
+    [JsonInclude]
+    public string message;
+    public RequestSendMessage() : base(Command.RequestSendMessage) { }
+}
+
+public class ResultSendMessage : ResultMsg
+{
+    public ResultSendMessage() : base(Command.ResultSendMessage) { }
+
+    [JsonInclude]
+    public string senderName;
+    [JsonInclude]
+    public string message;
+}
