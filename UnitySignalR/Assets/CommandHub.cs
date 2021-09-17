@@ -26,6 +26,8 @@ public class CommandHub : MonoBehaviour
             mainThreadFn.Add(AutoReconnect);
             await Task.Delay(1);
         };
+        connection.On<Command, string>("ClientReceiveMessage", OnReceiveMessage);
+
         gameSimulator = GetComponent<GameSimulator>();
 
         AutoReconnect();
