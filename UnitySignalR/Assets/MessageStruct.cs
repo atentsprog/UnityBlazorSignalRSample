@@ -52,6 +52,7 @@ public enum ErrorCode
     Succeed = 0, // 성공(에러 없음
 
     Invaild_Reward_Type,    // 유효하지 않은 보상 타입.
+    SamePreviousGroupName,  // 이전 그룹이름과 같아서 변경하지 않음.
 }
 
 [Serializable]
