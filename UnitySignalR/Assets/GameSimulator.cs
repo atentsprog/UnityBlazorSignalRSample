@@ -32,7 +32,6 @@ public class GameSimulator : MonoBehaviour
         commandInfos[Command.ResultLogin] = new CommandInfo("로그인", RequestLogin, ResultLogin);
         commandInfos[Command.ResultReward] = new CommandInfo("보상", RequestReward, ResultReward);
         commandInfos[Command.ResultChangeNickname] = new CommandInfo("닉네임 변경", RequestChangeNickname, ResultChangeNickname);
-
     }
 
     private void Start()
@@ -105,6 +104,8 @@ public class GameSimulator : MonoBehaviour
 
         print(result.userinfo.gold);
         UserData.Instance.userinfo = result.userinfo;
+        GetComponentInChildren<ChatUI>().currentChannel.text = result.userinfo.lastChatGroup;
+
         UserData.Instance.account = result.account;
     }
 

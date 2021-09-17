@@ -143,3 +143,17 @@ public class ResultSendMessage : ResultMsg
     [JsonInclude]
     public string message;
 }
+class RequestChangeChannel : RequestMsg
+{
+    [JsonInclude]
+    public string newChannelName;
+    public RequestChangeChannel() : base(Command.RequestChangeChannel) { }
+}
+
+public class ResultChangeChannel : ResultMsg
+{
+    public ResultChangeChannel() : base(Command.ResultChangeChannel) { }
+
+    [JsonInclude]
+    public string newChannelName;
+}
