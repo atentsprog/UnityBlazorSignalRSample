@@ -6,23 +6,23 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+public class CommandInfo
+{
+    public string name;
+    public UnityAction requestFn;
+    public UnityAction<string> resultFn;
+    public CommandInfo(string name, UnityAction requestFn, UnityAction<string> resultFn)
+    {
+        this.name = name;
+        this.requestFn = requestFn;
+        this.resultFn = resultFn;
+    }
+}
 public class GameSimulator : MonoBehaviour
 {
-    class CommandInfo
-    {
-        public string name;
-        public UnityAction requestFn;
-        public UnityAction<string> resultFn;
-        public CommandInfo(string name, UnityAction requestFn, UnityAction<string> resultFn)
-        {
-            this.name = name;
-            this.requestFn = requestFn;
-            this.resultFn = resultFn;
-        }
-    }
     CommandHub commandHub;
     public Button baseButton;
-    Dictionary<Command, CommandInfo> commandInfos = new Dictionary<Command, CommandInfo>();
+    public Dictionary<Command, CommandInfo> commandInfos = new Dictionary<Command, CommandInfo>();
     void Awake()
     {
         commandHub = GetComponent<CommandHub>();
@@ -51,7 +51,7 @@ public class GameSimulator : MonoBehaviour
         Debug.LogError($"서버에서 받은 에러 내용: {errorDiscription}");
     }
 
-    private void SendToServer(RequestMsg request)
+    public void SendToServer(RequestMsg request)
     {
         commandHub.SendToServer(request);
     }

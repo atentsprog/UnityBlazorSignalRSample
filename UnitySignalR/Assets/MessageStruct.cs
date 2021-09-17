@@ -38,6 +38,13 @@ public enum Command
     // 닉네임 변경
     RequestChangeNickname = 40,
     ResultChangeNickname = 41,
+
+
+    // 채팅
+    RequestSendMessage = 50,
+    ResultSendMessage,
+    RequestChangeChannel,
+    ResultChangeChannel,
 }
 
 public enum ErrorCode
